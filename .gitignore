@@ -1,0 +1,49 @@
+# Windows 系统缓存文件
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.tmp
+*.log
+
+# 编辑器/IDE 配置与临时文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Keil MDK 编译产物与中间文件
+Objects/
+Listings/
+*.axf
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.d
+*.o
+*.crf
+*.htm
+*.build_log.htm
+*.dep
+# Keil 工程本地配置
+*.uvgui.*
+*.uvopt
+*.uvoptx
+JLinkLog.txt
+*.dbgconf
+
+# IAR 工程相关（若使用IAR开发）
+settings/
+Debug/
+Release/
+*.pbd
+*.cspy
+*.bat
+
+# 通用编译中间文件
+*.obj
+*.lib
+*.exe
+*.dll
