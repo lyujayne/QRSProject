@@ -54,7 +54,7 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 1024 * 4,
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
@@ -118,7 +118,7 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
   lv_init();
-  lv_tick_set_cb(osKernelGetTickCount);  /* FreeRTOS tick，HAL_GetTick 在调度器启动后冻结 */
+  lv_tick_set_cb(HAL_GetTick);
   lv_port_disp_init();
 
   lv_obj_t * label = lv_label_create(lv_screen_active());
