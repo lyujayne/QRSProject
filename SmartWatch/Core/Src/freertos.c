@@ -27,7 +27,8 @@
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
 #include "lcd_init.h"
-
+#include "lvgl.h"
+#include "lv_port_disp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,7 +54,7 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
@@ -116,44 +117,19 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-/* ===== LCD 自检（放任务开头，只执行一次） ===== */
-  LCD_Init();              // ST7789 初始化（含复位+初始化序列，内部忙等约300ms）
-  LCD_Open_Light();        // 启动背光 PWM（TIM2_CH1）
-  LCD_Set_Light(50);       // 亮度 50%
+  lv_init();
+  lv_tick_set_cb(osKernelGetTickCount);  /* FreeRTOS tick，HAL_GetTick 在调度器启动后冻结 */
+  lv_port_disp_init();
 
-  /* ① 单色填充循环 */
-  LCD_Fill(0, 0, LCD_W, LCD_H, RED);
-  osDelay(500);
-  LCD_Fill(0, 0, LCD_W, LCD_H, GREEN);
-  osDelay(500);
-  LCD_Fill(0, 0, LCD_W, LCD_H, BLUE);
-  osDelay(500);
-  LCD_Fill(0, 0, LCD_W, LCD_H, WHITE);
-  osDelay(500);
-
-  /* ② 四色分区：验证坐标方向/RGB顺序 */
-  LCD_Fill(0,   0,   120, 140, RED);
-  LCD_Fill(120, 0,   240, 140, GREEN);
-  LCD_Fill(0,   140, 120, 280, BLUE);
-  LCD_Fill(120, 140, 240, 280, WHITE);
-  osDelay(1000);
-
-  /* ③ 图形：线/矩形/圆 */
-  LCD_DrawLine(0, 0, 239, 279, YELLOW);
-  LCD_DrawRectangle(10, 10, 100, 100, CYAN);
-  Draw_Circle(120, 140, 50, MAGENTA);
-  osDelay(1000);
-
-  /* ④ 文字+数字 */
-  LCD_ShowString(20, 30, (const u8*)"LCD TEST OK", RED, WHITE, 16, 0);
-  LCD_ShowIntNum(20, 60, 12345, 5, BLUE, WHITE, 16);
+  lv_obj_t * label = lv_label_create(lv_screen_active());
+  lv_label_set_text(label, "Hello LVGL");
+  lv_obj_center(label);
 
   /* Infinite loop */
   for(;;)
   {
-     osDelay(1);
-
-
+    lv_timer_handler();
+    osDelay(5);
   }
   /* USER CODE END StartDefaultTask */
 }

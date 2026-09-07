@@ -14,12 +14,18 @@
 #include "stm32f7xx_hal.h"
 */
 
-#include "lv_port_disp.h"
+#include "lv_port_lcd_stm32.h"
 #include "./src/drivers/display/st7789/lv_st7789.h"
+#include "spi.h"
 
 /*********************
  *      DEFINES
  *********************/
+
+#define MY_DISP_HOR_RES 240
+#define MY_DISP_VER_RES 320
+
+
 #ifndef MY_DISP_HOR_RES
     #warning Please define or replace the macro MY_DISP_HOR_RES with the actual screen width, default value 320 is used for now.
     #define MY_DISP_HOR_RES    320
@@ -60,7 +66,7 @@ static volatile int lcd_bus_busy = 0;
  *   GLOBAL FUNCTIONS
  **********************/
 
-void lv_port_display_init(void)
+void lv_port_disp_init(void)
 {
     /* Initialize LCD I/O */
     if(lcd_io_init() != 0)
@@ -68,28 +74,35 @@ void lv_port_display_init(void)
 
     /* Create the LVGL display object and the ST7789 LCD display driver */
     lcd_disp = lv_st7789_create(MY_DISP_HOR_RES, MY_DISP_VER_RES, LV_LCD_FLAG_NONE, lcd_send_cmd, lcd_send_color);
-    lv_display_set_rotation(lcd_disp, LV_DISPLAY_ROTATION_270);     /* set landscape orientation */
+    lv_display_set_rotation(lcd_disp, LV_DISPLAY_ROTATION_0);     /* set landscape orientation */
+    lv_lcd_generic_mipi_set_invert(lcd_disp, true);
+
 
     /* Example: two dynamically allocated buffers for partial rendering */
-    uint8_t * buf1 = NULL;
-    uint8_t * buf2 = NULL;
+    // uint8_t * buf1 = NULL;
+    // uint8_t * buf2 = NULL;
 
-    uint32_t buf_size = MY_DISP_HOR_RES * MY_DISP_VER_RES / 10 * lv_color_format_get_size(lv_display_get_color_format(
-                                                                                              lcd_disp));
+    // uint32_t buf_size = MY_DISP_HOR_RES * MY_DISP_VER_RES / 10 * lv_color_format_get_size(lv_display_get_color_format(
+    //                                                                                           lcd_disp));
 
-    buf1 = lv_malloc(buf_size);
-    if(buf1 == NULL) {
-        LV_LOG_ERROR("display draw buffer malloc failed");
-        return;
-    }
+    // buf1 = lv_malloc(buf_size);
+    // if(buf1 == NULL) {
+    //     LV_LOG_ERROR("display draw buffer malloc failed");
+    //     return;
+    // }
 
-    buf2 = lv_malloc(buf_size);
-    if(buf2 == NULL) {
-        LV_LOG_ERROR("display buffer malloc failed");
-        lv_free(buf1);
-        return;
-    }
-    lv_display_set_buffers(lcd_disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    // buf2 = lv_malloc(buf_size);
+    // if(buf2 == NULL) {
+    //     LV_LOG_ERROR("display buffer malloc failed");
+    //     lv_free(buf1);
+    //     return;
+    // }
+
+    static uint8_t buf1[MY_DISP_HOR_RES * MY_DISP_VER_RES / 5];
+    static uint8_t buf2[MY_DISP_HOR_RES * MY_DISP_VER_RES / 5];
+
+    // lv_display_set_buffers(lcd_disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
+     lv_display_set_buffers(lcd_disp, buf1, buf2, MY_DISP_HOR_RES * MY_DISP_VER_RES / 5, LV_DISPLAY_RENDER_MODE_PARTIAL);
 }
 
 /**********************

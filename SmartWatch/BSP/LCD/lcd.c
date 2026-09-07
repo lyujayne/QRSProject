@@ -35,23 +35,28 @@ void LCD_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 color)
 }
 
 /******************************************************************************
-      函数说明：在指定区域填充颜色
+      函数说明：在指定区域填充颜色数组（LVGL DMA 刷屏用）
       入口数据：xsta,ysta   起始坐标
-                xend,yend   终止坐标
-								color       要填充的颜色
+                xend,yend   终止坐标（含）
+                color_p     RGB565 像素数组（小端，原地交换为大端后 DMA 发送）
       返回值：  无
 ******************************************************************************/
 void LCD_Color_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 *color_p)
 {
-	u16 i,j,width,height;
-	width = xend-xsta+1;
-	height = yend-ysta+1;
-	uint32_t pixel_count = width * height;
-	uint32_t byte_count = pixel_count * 2U;
+	u16 width  = xend - xsta + 1;
+    u16 height = yend - ysta + 1;
+    uint32_t pixel_count = (uint32_t)width * height;
+    uint32_t byte_count  = pixel_count * 2U;
 
-	LCD_Address_Set(xsta,ysta+OFFSET_Y,xend,yend+OFFSET_Y);
+    LCD_Address_Set(xsta, ysta + OFFSET_Y, xend, yend + OFFSET_Y);
 
-	HAL_SPI_Transmit_DMA(&hspi1,(uint8_t*)color_p,byte_count);
+    /* 小端 RGB565 原地转大端（与 LCD_WR_DATA 高字节先发保持一致） */
+    for (uint32_t i = 0; i < pixel_count; i++)
+    {
+        color_p[i] = (color_p[i] << 8) | (color_p[i] >> 8);
+    }
+
+    HAL_SPI_Transmit_DMA(&hspi1, (uint8_t *)color_p, (uint16_t)byte_count);
 }
 
 // 设置通知的回调函数
@@ -64,14 +69,10 @@ void LCD_Set_Flush_Complete_Callback(LCD_CallbackFunc_t cb)
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 {
 	if (hspi->Instance == SPI1)
-	{
-		// 确保最后一位数据离开 STM32 的移位寄存器
-		while (hspi->Instance->SR & SPI_FLAG_BSY);
-		if (lcd_ready_cb)
-		{
-			lcd_ready_cb();
-		}
-	}
+    {
+        while (hspi->Instance->SR & SPI_FLAG_BSY);   /* 等最后一位发完 */
+        if (lcd_ready_cb) lcd_ready_cb();            /* 通知 LVGL */
+    }
 }
 
 /******************************************************************************

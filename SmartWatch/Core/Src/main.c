@@ -29,6 +29,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "delay.h"
+#include "lcd.h"
+#include "lcd_init.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
