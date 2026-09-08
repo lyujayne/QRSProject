@@ -12,6 +12,7 @@
 "smartwatch\stm32f4xx_hal_msp.o"
 "smartwatch\stm32f4xx_hal_timebase_tim.o"
 "smartwatch\delay.o"
+"smartwatch\user_tasksinit.o"
 "smartwatch\page_home.o"
 "smartwatch\croutine.o"
 "smartwatch\event_groups.o"

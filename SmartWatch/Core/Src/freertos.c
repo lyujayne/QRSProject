@@ -25,11 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lcd.h"
 #include "lcd_init.h"
-#include "lvgl.h"
 #include "lv_port_disp.h"
-#include "page_home.h"
+#include "user_TasksInit.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,6 +73,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
+  User_Tasks_Init();
 
   /* USER CODE END Init */
 
@@ -99,6 +98,9 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
+
+  /* 添加任务*/
+
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
@@ -118,18 +120,12 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  lv_init();
-  lv_tick_set_cb(HAL_GetTick);
-  lv_port_disp_init();
-
-  page_home_create();          /* 创建表盘 */
+        /* 创建表盘 */
 
   /* Infinite loop */
   for(;;)
   {
-    page_home_refresh();       /* 每秒刷新一次（内部有门控，开销极小） */
-    lv_timer_handler();
-    osDelay(5);
+    osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }
