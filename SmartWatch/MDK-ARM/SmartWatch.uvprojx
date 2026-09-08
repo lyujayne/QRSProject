@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE,LV_LVGL_H_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../BSP/IIC;../SYSTEM;../BSP/LCD;../Middlewares;../Middlewares/lvgl;../Middlewares/lvgl/porting</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../BSP/IIC;../SYSTEM;../BSP/LCD;../Middlewares;../Middlewares/lvgl;../Middlewares/lvgl/porting;..\USER\GUI\Screens\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -680,6 +680,18 @@
         </Group>
         <Group>
           <GroupName>Application/User/UI</GroupName>
+          <Files>
+            <File>
+              <FileName>page_home.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\GUI\Screens\Src\page_home.c</FilePath>
+            </File>
+            <File>
+              <FileName>page_home.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\GUI\Screens\Inc\page_home.h</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Middlewares/FreeRTOS</GroupName>

@@ -29,6 +29,7 @@
 #include "lcd_init.h"
 #include "lvgl.h"
 #include "lv_port_disp.h"
+#include "page_home.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,7 +55,7 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
@@ -121,13 +122,12 @@ void StartDefaultTask(void *argument)
   lv_tick_set_cb(HAL_GetTick);
   lv_port_disp_init();
 
-  lv_obj_t * label = lv_label_create(lv_screen_active());
-  lv_label_set_text(label, "Hello LVGL");
-  lv_obj_center(label);
+  page_home_create();          /* 创建表盘 */
 
   /* Infinite loop */
   for(;;)
   {
+    page_home_refresh();       /* 每秒刷新一次（内部有门控，开销极小） */
     lv_timer_handler();
     osDelay(5);
   }
