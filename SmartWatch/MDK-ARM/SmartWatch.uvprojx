@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE,LV_LVGL_H_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../BSP/IIC;../SYSTEM;../BSP/LCD;../Middlewares;../Middlewares/lvgl;../Middlewares/lvgl/porting;..\USER\GUI\Screens\Inc;..\USER\TASK\Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../BSP/IIC;../SYSTEM;../BSP/LCD;../Middlewares;../Middlewares/lvgl;../Middlewares/lvgl/porting;..\USER\GUI\Screens\Inc;..\USER\TASK\Inc;..\BSP\TOUCH</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1592,6 +1592,16 @@
               <FileName>pic.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\BSP\LCD\pic.h</FilePath>
+            </File>
+            <File>
+              <FileName>CST816.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\TOUCH\CST816.c</FilePath>
+            </File>
+            <File>
+              <FileName>CST816.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\TOUCH\CST816.h</FilePath>
             </File>
           </Files>
         </Group>

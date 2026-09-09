@@ -48,6 +48,7 @@
 "smartwatch\iic.o"
 "smartwatch\lcd.o"
 "smartwatch\lcd_init.o"
+"smartwatch\cst816.o"
 "smartwatch\lv_port_indev.o"
 "smartwatch\lv_port_lcd_stm32.o"
 "smartwatch\lv_group.o"

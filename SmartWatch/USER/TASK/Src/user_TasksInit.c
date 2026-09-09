@@ -11,7 +11,10 @@
 #include "lcd_init.h"            /* 背光开关：LCD_Open_Light / LCD_Close_Light */
 #include "lvgl.h"                /* LVGL 库 */
 #include "lv_port_disp.h"        /* 屏幕驱动入口：lv_port_disp_init() */
-#include "page_home.h"           /* 表盘：page_home_create() / page_home_refresh() */
+#include "page_home.h"          /* 表盘：page_home_create() / page_home_refresh() */
+
+#include "lv_port_disp.h"
+#include "lv_port_indev.h"
 
 osThreadId_t LvHandlerTaskHandle;
 const osThreadAttr_t LvHandlerTask_attributes = {
@@ -62,6 +65,9 @@ void LvHandlerTask(void *argument)
     lv_tick_set_cb(HAL_GetTick);   /* ② 告诉 LVGL："读时间用 HAL_GetTick()"。
                                     *    动画/刷新节拍全靠它，不设置动画不会走 */
     lv_port_disp_init();           /* ③ 屏幕驱动：初始化 ST7789、注册绘制回调、申请双缓冲 */
+
+    lv_port_indev_init();          /* ← 新增：初始化 CST816 并注册触摸 */
+
     page_home_create();            /* ④ 创建表盘：时间/日期/状态栏/三张卡片，全在 page_home.c 里 */
 
     /* ---------- 主循环：每 5ms 转一圈 ---------- */
